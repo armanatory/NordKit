@@ -1,6 +1,21 @@
 # Changelog
 
 
+## 2026-05-05T20:53:52Z — Default cycle (Understand → Capture) (`default-cycle`)
+
+**Files changed**
+- modified: `web/index.html`
+
+**What each stage did**
+- `understand` (operations) — **Current product state (for context):** `web/index.html` exists and works locally with three unfixed visual defects — the app is one deploy + three small bug fixes away from being useful online.
+- `review` (reviewer) — Summary written to `ledger/workflows/default-cycle/review-summary.md`.
+- `identify` (product-explorer) — Directions 1–4 are architecture-independent and can be prioritized immediately. Direction 5 waits on the founder's response to escalation 0001. The "didn't explore" section explicitly rules out AI drafting and IG API integration as out-of-…
+- `prioritize` (product-owner) — Prioritization complete. Cycle 3 will fix the three carried-forward visual defects (centering, markdown routing, truncation guard) plus seed the empty canvas with placeholder copy — bundled because re-shipping known defects under a pending…
+- `produce` (builder) — All acceptance criteria verified. The app is now deploy-ready pending escalation 0001 resolution. Produce summary written to `./ledger/workflows/default-cycle/produce-summary.md`.
+- `evaluate` (qa-observer) — **Recommended next-cycle priorities:** resolve escalation 0001 (deploy), implement multi-slide workflow with sequential numbered downloads, and run the first live headless-browser QA pass once the site is up.
+- `capture` (operations) — **Two blockers for next cycle:** escalation 0001 needs founder resolution before deployment can proceed, and the multi-slide sequence workflow (the core product promise) still needs to be built.
+
+
 ## 2026-05-05T11:17:41Z — Default cycle (Understand → Capture) (`default-cycle`)
 
 **Files changed**: none.

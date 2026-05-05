@@ -426,13 +426,12 @@ Supports:
             }
 
             // Calculate starting y to center content vertically
-            // Use golden ratio: place content starting at 1/3 from top for better visual balance
-            // Actually, use center (lessons: "always vertically center")
-            let y = CONFIG.PADDING + Math.max(0, (availableHeight - contentHeight) / 2);
+            // Center on 960px (vertical midpoint of 1920px)
+            let y = Math.max(CONFIG.PADDING, (CONFIG.SLIDE_HEIGHT - contentHeight) / 2);
 
             // ===== SECOND PASS: Draw content =====
 
-            // Draw title
+            // Draw title (title does not support markdown, safe to use fillText directly)
             if (title.trim()) {
                 ctx.font = getFontString(CONFIG.TITLE_FONT_SIZE);
                 for (const line of titleWrappedLines) {
@@ -463,16 +462,24 @@ Supports:
                             ctx.fillText('•', x + 20, y);
                         }
 
-                        // Draw the text line
-                        ctx.font = getFontString(CONFIG.BODY_FONT_SIZE);
-                        ctx.fillStyle = CONFIG.TEXT_COLOR;
-                        ctx.textBaseline = 'top';
-                        ctx.fillText(wrapped, x + (bodyLine.isBullet ? 40 : 0), y);
+                        // Draw the text line with markdown support (user content must use helper)
+                        drawTextWithMarkdown(x + (bodyLine.isBullet ? 40 : 0), y, wrapped, CONFIG.BODY_FONT_SIZE, CONFIG.TEXT_COLOR);
                         y += CONFIG.BODY_FONT_SIZE * CONFIG.LINE_SPACING;
                     }
                 }
 
                 if (truncated) {
+                    // Draw truncation warning badge on the slide itself
+                    const warningY = CONFIG.SLIDE_HEIGHT - 100;
+                    const warningText = '⚠ Content truncated';
+                    ctx.font = getFontString(20);
+                    ctx.fillStyle = '#ff6b6b';
+                    ctx.textBaseline = 'top';
+                    const warningWidth = measureText(warningText) + 20;
+                    ctx.fillRect(x, warningY, warningWidth, 40);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText(warningText, x + 10, warningY + 8);
+
                     console.warn('Warning: Some content was truncated and did not fit on the slide.');
                 }
             }
@@ -480,10 +487,17 @@ Supports:
 
         /**
          * Update the preview canvas in real time.
+         * Seed with example content if both title and body are empty.
          */
         function updatePreview() {
-            const title = titleInput.value;
-            const body = bodyInput.value;
+            let title = titleInput.value;
+            let body = bodyInput.value;
+
+            // Seed with example content only on first load (empty canvas)
+            if (!title.trim() && !body.trim()) {
+                body = 'Type your story here…\n\nSupported formatting:\n- **bold text** for emphasis\n- *italic text* for style\n- Bullet points with -\n\nEdit any text to begin.';
+            }
+
             renderSlide(title, body);
         }
 
@@ -491,8 +505,13 @@ Supports:
          * Download the current slide as a PNG.
          */
         function downloadSlide() {
-            const title = titleInput.value;
-            const body = bodyInput.value;
+            let title = titleInput.value;
+            let body = bodyInput.value;
+
+            // Apply seed logic: only for empty canvas
+            if (!title.trim() && !body.trim()) {
+                body = 'Type your story here…\n\nSupported formatting:\n- **bold text** for emphasis\n- *italic text* for style\n- Bullet points with -\n\nEdit any text to begin.';
+            }
 
             // Render to canvas (full resolution)
             renderSlide(title, body);
