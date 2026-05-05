@@ -1,6 +1,20 @@
 # Changelog
 
 
+## 2026-05-05T11:17:41Z — Default cycle (Understand → Capture) (`default-cycle`)
+
+**Files changed**: none.
+
+**What each stage did**
+- `understand` (operations) — **Outputs written:** - `ledger/cycles/2-build-web-app.md` — cycle file, `status: open`, `step: understand` - `ledger/workflows/default-cycle/understand-summary.md` — updated with cycle 2 context - `ledger/projects/nordkit/INDEX.md` — updat…
+- `review` (reviewer) — Per C4, the cycle should pause at Prioritize until the founder responds to escalation 0001.
+- `identify` (product-explorer) — **Key blocker still open:** Escalation 0001 (deploy authorization + architecture decision) is unresolved. The Product Owner is flagged to treat it as a prerequisite before Prioritize runs.
+- `prioritize` (product-owner) — Summary written to `./ledger/workflows/default-cycle/prioritize-summary.md`. No new escalations opened.
+- `produce` (builder) — The artifact is ready for the Evaluate step. The founder can review it by opening `web/index.html` directly in a browser (works from `file://`) or serving it locally.
+- `evaluate` (qa-observer) — The evaluate summary and updated lessons have been written to the ledger.
+- `capture` (operations) — **Next cycle priority queue:** 1. Apply the markdown fix (unblocks shipping) 2. Resolve escalation 0001 (founder must approve deployment target) 3. Deploy online (founder's top stated priority) 4. Multi-slide sequence with batch download (…
+
+
 ## 2026-05-05T10:49:44Z — Default cycle (Understand → Capture) (`default-cycle`)
 
 **Files changed**
