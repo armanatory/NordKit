@@ -1,5 +1,20 @@
 # Changelog
 
+
+## 2026-05-05T10:49:44Z — Default cycle (Understand → Capture) (`default-cycle`)
+
+**Files changed**
+- modified: `src/render.py`
+
+**What each stage did**
+- `understand` (operations) — **Context loaded for downstream nodes:** The prototype (`src/render.py`) exists and produces PNGs, but has four render-quality defects (top-anchored layout, character-count wrapping, literal Markdown, silent truncation). The founder's prio…
+- `review` (reviewer) — No escalation record filed (no action requiring founder approval has been taken; the triggers are latent on Prioritize's choice). Not rejected because the cycle file itself is grounded — the concerns live in forward-looking guidance, which…
+- `identify` (product-explorer) — The summary is at `ledger/workflows/default-cycle/identify-summary.md` and is ready for the Prioritize node.
+- `prioritize` (product-owner) — Summary written to `./ledger/workflows/default-cycle/prioritize-summary.md` and ready for the next node.
+- `produce` (builder) — The code is now ready for visual QA assessment against the four fixed defects and any founder-defined shippability criteria.
+- `evaluate` (qa-observer) — Two new lessons were added to `ledger/lessons.md`: 1. Markdown parse-then-draw disconnection — always trace the full path from segments to canvas pixel 2. Truncation check unreachability — a guard derived from the same centering data it's…
+- `capture` (operations) — **Clerical issue surfaced:** `1-fix-render-quality.md` was given `id: 1` by the Understand step, but `1-kickoff.md` already holds that id. Noted in both the cycle file and capture summary. Next Understand step should allocate id 2.
+
 What each workflow run changed — technically and functionally.
 Auto-generated; one entry per run. Operational metrics (tokens,
 cost, duration) live in the admin panel, not here.
