@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NordKit - Instagram Story Slide Creator</title>
+    <style>
+        @font-face {
+            font-family: 'LiberationSans';
+            src: url('LiberationSans-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'LiberationSans', sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .input-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .input-section h2 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            min-height: 300px;
+            resize: vertical;
+            font-family: monospace;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-download {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .btn-download:hover {
+            background: #333;
+        }
+
+        .btn-download:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-clear {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-clear:hover {
+            background: #e0e0e0;
+        }
+
+        .preview-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .preview-section h2 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 20px;
+            overflow: auto;
+            max-height: 600px;
+        }
+
+        #canvas {
+            border: 1px solid #ddd;
+            background: #1a1a1a;
+            max-width: 100%;
+            height: auto;
+            image-rendering: auto;
+            image-rendering: crisp-edges;
+        }
+
+        .info {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-left: 3px solid #1a1a1a;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; margin-bottom: 30px; color: #333;">NordKit — Instagram Story Slides</h1>
+
+    <div class="container">
+        <div class="input-section">
+            <h2>Create Slide</h2>
+            <div class="form-group">
+                <label for="title">Title (optional)</label>
+                <input type="text" id="title" placeholder="Enter slide title...">
+            </div>
+            <div class="form-group">
+                <label for="body">Body Text</label>
+                <textarea id="body" placeholder="Enter slide content...
+Supports:
+- Bullet points (start with -)
+- **bold text**
+- *italic text*"></textarea>
+            </div>
+            <div class="button-group">
+                <button class="btn-download" id="downloadBtn">Download PNG (1080×1920)</button>
+                <button class="btn-clear" id="clearBtn">Clear</button>
+            </div>
+            <div class="info">
+                <strong>Local-first:</strong> This app runs entirely in your browser. No data leaves your device.
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <h2>Preview (9:16 IG Story)</h2>
+            <div class="canvas-wrapper">
+                <canvas id="canvas"></canvas>
+            </div>
+            <div class="info">
+                <strong>Resolution:</strong> 1080×1920 pixels (full IG story resolution).
+                Preview is scaled for display; download is full resolution.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Configuration =====
+        const CONFIG = {
+            SLIDE_WIDTH: 1080,
+            SLIDE_HEIGHT: 1920,
+            BACKGROUND_COLOR: '#1a1a1a',
+            TEXT_COLOR: '#ffffff',
+            PADDING: 60,
+            TITLE_FONT_SIZE: 60,
+            BODY_FONT_SIZE: 36,
+            LINE_SPACING: 1.5,
+            FONT_FAMILY: '"LiberationSans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+        };
+
+        // ===== DOM Elements =====
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const titleInput = document.getElementById('title');
+        const bodyInput = document.getElementById('body');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const clearBtn = document.getElementById('clearBtn');
+
+        // Set canvas to full resolution
+        canvas.width = CONFIG.SLIDE_WIDTH;
+        canvas.height = CONFIG.SLIDE_HEIGHT;
+
+        // ===== Utility Functions =====
+
+        /**
+         * Measure text width in the current canvas context.
+         * Accounts for font configuration already set on ctx.
+         */
+        function measureText(text) {
+            return ctx.measureText(text).width;
+        }
+
+        /**
+         * Wrap text by pixel width, not character count.
+         * Returns an array of wrapped lines.
+         */
+        function wrapTextByPixels(text, maxWidth) {
+            const words = text.split(/\s+/);
+            const lines = [];
+            let currentLine = [];
+
+            for (const word of words) {
+                const testLine = currentLine.length === 0
+                    ? word
+                    : currentLine.join(' ') + ' ' + word;
+                const lineWidth = measureText(testLine);
+
+                if (lineWidth <= maxWidth) {
+                    currentLine.push(word);
+                } else {
+                    if (currentLine.length > 0) {
+                        lines.push(currentLine.join(' '));
+                    }
+                    currentLine = [word];
+                }
+            }
+
+            if (currentLine.length > 0) {
+                lines.push(currentLine.join(' '));
+            }
+
+            return lines;
+        }
+
+        /**
+         * Parse markdown formatting in a line.
+         * Returns an array of { text, bold, italic } objects.
+         */
+        function parseMarkdownLine(text) {
+            const segments = [];
+            let i = 0;
+            let currentText = '';
+            let currentBold = false;
+            let currentItalic = false;
+
+            while (i < text.length) {
+                // Check for **bold**
+                if (i < text.length - 1 && text.substring(i, i + 2) === '**') {
+                    if (currentText) {
+                        segments.push({
+                            text: currentText,
+                            bold: currentBold,
+                            italic: currentItalic
+                        });
+                        currentText = '';
+                    }
+                    currentBold = !currentBold;
+                    i += 2;
+                }
+                // Check for *italic* (but not **)
+                else if (text[i] === '*' && (i === 0 || text[i - 1] !== '*') && (i + 1 >= text.length || text[i + 1] !== '*')) {
+                    if (currentText) {
+                        segments.push({
+                            text: currentText,
+                            bold: currentBold,
+                            italic: currentItalic
+                        });
+                        currentText = '';
+                    }
+                    currentItalic = !currentItalic;
+                    i += 1;
+                } else {
+                    currentText += text[i];
+                    i += 1;
+                }
+            }
+
+            if (currentText) {
+                segments.push({
+                    text: currentText,
+                    bold: currentBold,
+                    italic: currentItalic
+                });
+            }
+
+            return segments;
+        }
+
+        /**
+         * Parse body text into lines, extracting bullets and markdown.
+         * Returns an array of { text, isBullet, segments } objects.
+         */
+        function parseBodyText(body) {
+            const lines = [];
+            for (const line of body.split('\n')) {
+                const trimmed = line.trim();
+                let isBullet = false;
+                let lineText = trimmed;
+
+                if (trimmed.startsWith('- ')) {
+                    isBullet = true;
+                    lineText = trimmed.substring(2);
+                }
+
+                const segments = parseMarkdownLine(lineText);
+                lines.push({
+                    text: lineText,
+                    isBullet,
+                    segments
+                });
+            }
+            return lines;
+        }
+
+        /**
+         * Get the font string for canvas.
+         * If bold is true, use a heavier weight by increasing font size slightly or using a different style.
+         */
+        function getFontString(fontSize, bold = false, italic = false) {
+            let style = '';
+            if (italic) style += 'italic ';
+            if (bold) style += 'bold ';
+
+            // Use slightly larger size for bold effect (since we can't guarantee bold variant)
+            const adjSize = bold ? Math.round(fontSize * 1.1) : fontSize;
+            return `${style}${adjSize}px ${CONFIG.FONT_FAMILY}`;
+        }
+
+        /**
+         * Draw text with markdown formatting support.
+         * Returns the x position after drawing.
+         */
+        function drawTextWithMarkdown(x, y, text, fontSize, color) {
+            const segments = parseMarkdownLine(text);
+            let currentX = x;
+
+            for (const segment of segments) {
+                ctx.font = getFontString(fontSize, segment.bold, segment.italic);
+                ctx.fillStyle = color;
+                ctx.textBaseline = 'top';
+                ctx.fillText(segment.text, currentX, y);
+                currentX += measureText(segment.text);
+            }
+
+            return currentX;
+        }
+
+        /**
+         * Render a single slide to the canvas.
+         * This function is used for both live preview and PNG export.
+         */
+        function renderSlide(title, body) {
+            // Clear canvas
+            ctx.fillStyle = CONFIG.BACKGROUND_COLOR;
+            ctx.fillRect(0, 0, CONFIG.SLIDE_WIDTH, CONFIG.SLIDE_HEIGHT);
+
+            const x = CONFIG.PADDING;
+            const maxWidth = CONFIG.SLIDE_WIDTH - 2 * CONFIG.PADDING;
+            const availableHeight = CONFIG.SLIDE_HEIGHT - 2 * CONFIG.PADDING - 60;
+
+            // ===== FIRST PASS: Measure content =====
+            let contentHeight = 0;
+            let titleWrappedLines = [];
+            let bodyWrappedLines = [];
+
+            if (title.trim()) {
+                ctx.font = getFontString(CONFIG.TITLE_FONT_SIZE);
+                titleWrappedLines = wrapTextByPixels(title.trim(), maxWidth);
+                contentHeight += titleWrappedLines.length * (CONFIG.TITLE_FONT_SIZE * CONFIG.LINE_SPACING);
+                contentHeight += CONFIG.PADDING / 2;
+            }
+
+            if (body.trim()) {
+                ctx.font = getFontString(CONFIG.BODY_FONT_SIZE);
+                const bodyLines = parseBodyText(body);
+                for (const line of bodyLines) {
+                    if (line.text.trim()) {
+                        const bulletOffset = line.isBullet ? 40 : 0;
+                        const wrapped = wrapTextByPixels(line.text, maxWidth - bulletOffset);
+                        bodyWrappedLines.push({
+                            lines: wrapped,
+                            isBullet: line.isBullet
+                        });
+                        contentHeight += wrapped.length * (CONFIG.BODY_FONT_SIZE * CONFIG.LINE_SPACING);
+                    }
+                }
+            }
+
+            // Calculate starting y to center content vertically
+            // Use golden ratio: place content starting at 1/3 from top for better visual balance
+            // Actually, use center (lessons: "always vertically center")
+            let y = CONFIG.PADDING + Math.max(0, (availableHeight - contentHeight) / 2);
+
+            // ===== SECOND PASS: Draw content =====
+
+            // Draw title
+            if (title.trim()) {
+                ctx.font = getFontString(CONFIG.TITLE_FONT_SIZE);
+                for (const line of titleWrappedLines) {
+                    ctx.fillStyle = CONFIG.TEXT_COLOR;
+                    ctx.textBaseline = 'top';
+                    ctx.fillText(line, x, y);
+                    y += CONFIG.TITLE_FONT_SIZE * CONFIG.LINE_SPACING;
+                }
+                y += CONFIG.PADDING / 2;
+            }
+
+            // Draw body
+            if (body.trim()) {
+                let truncated = false;
+                for (const bodyLine of bodyWrappedLines) {
+                    for (const wrapped of bodyLine.lines) {
+                        // Truncation guard: test against actual canvas boundary
+                        if (y + (CONFIG.BODY_FONT_SIZE * CONFIG.LINE_SPACING) > CONFIG.SLIDE_HEIGHT - CONFIG.PADDING) {
+                            truncated = true;
+                            continue;
+                        }
+
+                        // Draw bullet if needed
+                        if (bodyLine.isBullet) {
+                            ctx.font = getFontString(CONFIG.BODY_FONT_SIZE);
+                            ctx.fillStyle = CONFIG.TEXT_COLOR;
+                            ctx.textBaseline = 'top';
+                            ctx.fillText('•', x + 20, y);
+                        }
+
+                        // Draw the text line
+                        ctx.font = getFontString(CONFIG.BODY_FONT_SIZE);
+                        ctx.fillStyle = CONFIG.TEXT_COLOR;
+                        ctx.textBaseline = 'top';
+                        ctx.fillText(wrapped, x + (bodyLine.isBullet ? 40 : 0), y);
+                        y += CONFIG.BODY_FONT_SIZE * CONFIG.LINE_SPACING;
+                    }
+                }
+
+                if (truncated) {
+                    console.warn('Warning: Some content was truncated and did not fit on the slide.');
+                }
+            }
+        }
+
+        /**
+         * Update the preview canvas in real time.
+         */
+        function updatePreview() {
+            const title = titleInput.value;
+            const body = bodyInput.value;
+            renderSlide(title, body);
+        }
+
+        /**
+         * Download the current slide as a PNG.
+         */
+        function downloadSlide() {
+            const title = titleInput.value;
+            const body = bodyInput.value;
+
+            // Render to canvas (full resolution)
+            renderSlide(title, body);
+
+            // Convert to blob and download
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'slide.png';
+                link.click();
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+
+        /**
+         * Clear all inputs.
+         */
+        function clearInputs() {
+            titleInput.value = '';
+            bodyInput.value = '';
+            updatePreview();
+        }
+
+        // ===== Event Listeners =====
+        titleInput.addEventListener('input', updatePreview);
+        bodyInput.addEventListener('input', updatePreview);
+        downloadBtn.addEventListener('click', downloadSlide);
+        clearBtn.addEventListener('click', clearInputs);
+
+        // Initial render
+        updatePreview();
+    </script>
+</body>
+</html>
