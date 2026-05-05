@@ -1,0 +1,23 @@
+Liberation Sans Font License
+
+The Liberation fonts are replacement TrueType fonts for Times New Roman,
+Arial and Courier New. They are metrically compatible with the original fonts.
+
+Licensed under the SIL Open Font License, Version 1.1.
+
+You are free to:
+- Use this font for display and printing
+- Include this font in any document and web pages
+- Share this font with others
+- Modify the font, as long as you retain the original name or give
+  credit to the original authors
+
+You cannot:
+- Sell this font on its own
+- Sell a document that requires this font unless you distribute
+  the font with the document
+
+See https://opensource.org/licenses/OFL-1.1 for the full license text.
+
+Font Authors: Metrowerks, IBM, Red Hat
+Original Authors: Bitstream Vera (Jim Lyles)

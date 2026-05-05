@@ -1,0 +1,12 @@
+slides/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.DS_Store
+*.swp
+*.swo
+*~
+.venv/
+venv/
