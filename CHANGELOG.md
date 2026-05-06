@@ -1,6 +1,21 @@
 # Changelog
 
 
+## 2026-05-06T08:52:36Z — Default cycle (Understand → Capture) (`default-cycle`)
+
+**Files changed**
+- modified: `web/index.html`
+
+**What each stage did**
+- `understand` (operations) — 1. Redesign `web/index.html` from two-panel form-plus-preview → canvas-first image editor (large centered 9:16 canvas as the dominant surface; rich controls around it: background picker, font, size, text color, alignment). 2. Background op…
+- `review` (reviewer) — Summary written to `./ledger/workflows/default-cycle/review-summary.md`.
+- `identify` (product-explorer) — All five directions enforce the reviewer's hard constraint: no direction allows a static form field as the primary editing interaction. Observable, URL-verifiable acceptance checks are defined for each. The summary is written to `ledger/wo…
+- `prioritize` (product-owner) — Summary written to `./ledger/workflows/default-cycle/prioritize-summary.md`.
+- `produce` (builder) — The produce-summary has been written to `./ledger/workflows/default-cycle/produce-summary.md` and the changes are ready for the Evaluate step (Reviewer + QA Observer).
+- `evaluate` (qa-observer) — 3. **M1 + M2 (escalation risk):** Browser download-block on sequential `link.click()` calls and empty slides exporting tutorial text as PNG have now been flagged across two consecutive cycles without being addressed. Per lessons.md, these…
+- `capture` (operations) — **Cycle 6 summary:** Canvas-first redesign with overlay editing, 8-swatch palette, and numbered downloads shipped and confirmed live at https://nordkit.hiarman.com/. Verdict is `flag-experience` — the canvas still doesn't fill the viewport…
+
+
 ## 2026-05-06T06:00:36Z — Default cycle (Understand → Capture) (`default-cycle`)
 
 **Files changed**
