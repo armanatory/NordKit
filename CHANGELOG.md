@@ -1,6 +1,22 @@
 # Changelog
 
 
+## 2026-05-06T05:01:33Z — Default cycle (Understand → Capture) (`default-cycle`)
+
+**Files changed**
+- added: `tasks/lesson-check-cycle4.md`
+- modified: `KANBAN.md`, `web/README.md`, `web/index.html`
+
+**What each stage did**
+- `understand` (operations) — - **No blocking escalations.** Escalation 0001 was resolved by the founder on 2026-05-06 — client-side architecture confirmed, deploy to nordkit.hiarman.com authorized, static files behind Caddy. - **State inherited from cycle 3:** `web/in…
+- `review` (reviewer) — No new escalation needed — 0001 covers the deploy/infra surface. Review summary written to `./ledger/workflows/default-cycle/review-summary.md`.
+- `identify` (product-explorer) — The summary flags Direction B as the main risk concentration and Direction E as mandatory. The Product Owner can now pick an approach before the Builder commits to an implementation.
+- `prioritize` (product-owner) — **Escalations:** none new. Existing escalation 0001 covers the static-file Caddy deploy this bundle implies. Summary written to `./ledger/workflows/default-cycle/prioritize-summary.md`.
+- `produce` (builder) — Produce-summary written to `./ledger/workflows/default-cycle/produce-summary.md`.
+- `evaluate` (qa-observer) — Two new lessons appended to `ledger/lessons.md`: the deploy-gap pattern and the shared-canvas download race condition.
+- `capture` (operations) — **Next cycle inputs:** (1) execute Caddy deploy + `curl -I` gate; (2) fix `downloadAllSlides()` Promise-chain; (3) add `toBlob` null guard; (4) verify font CORS.
+
+
 ## 2026-05-05T20:53:52Z — Default cycle (Understand → Capture) (`default-cycle`)
 
 **Files changed**

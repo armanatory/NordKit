@@ -126,12 +126,13 @@ location /web/ {
 
 ## Non-Goals (Deliberately Out of Scope)
 
-- Multi-slide editing in one session (create one slide at a time; download, then start a new one)
 - Color picker or theme customization
 - Image upload or background images
 - Font family selector
-- ZIP download (single PNG per download; use your file manager to batch-download multiple PNGs)
 - Markdown parsing beyond basic `**bold**` and `*italic*`
+- Slide reordering or undo/redo
+- AI-assisted narrative drafting
+- Thumbnail strip preview
 
 These are intentionally excluded to keep the app simple and offline-capable.
 

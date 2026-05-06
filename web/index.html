@@ -32,6 +32,91 @@
             gap: 30px;
         }
 
+        .slides-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .slides-panel h2 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .slides-nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .slide-tab {
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .slide-tab:hover {
+            border-color: #1a1a1a;
+            background: #f0f0f0;
+        }
+
+        .slide-tab.active {
+            background: #1a1a1a;
+            color: white;
+            border-color: #1a1a1a;
+        }
+
+        .slides-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-add-slide {
+            padding: 8px 16px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-add-slide:hover {
+            background: #333;
+        }
+
+        .btn-remove-slide {
+            padding: 8px 16px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-remove-slide:hover {
+            background: #ff5252;
+        }
+
+        .btn-remove-slide:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
         .input-section {
             background: white;
             padding: 20px;
@@ -104,6 +189,16 @@
             cursor: not-allowed;
         }
 
+        .btn-download-all {
+            background: #228B22;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-download-all:hover {
+            background: #1a6b1a;
+        }
+
         .btn-clear {
             background: #f0f0f0;
             color: #333;
@@ -168,26 +263,38 @@
     <h1 style="text-align: center; margin-bottom: 30px; color: #333;">NordKit — Instagram Story Slides</h1>
 
     <div class="container">
-        <div class="input-section">
-            <h2>Create Slide</h2>
-            <div class="form-group">
-                <label for="title">Title (optional)</label>
-                <input type="text" id="title" placeholder="Enter slide title...">
+        <div>
+            <div class="slides-panel">
+                <h2>Slides</h2>
+                <div class="slides-nav" id="slidesNav"></div>
+                <div class="slides-controls">
+                    <button class="btn-add-slide" id="addSlideBtn">Add Slide</button>
+                    <button class="btn-remove-slide" id="removeSlideBtn">Remove Current</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="body">Body Text</label>
-                <textarea id="body" placeholder="Enter slide content...
+
+            <div class="input-section">
+                <h2>Edit Slide</h2>
+                <div class="form-group">
+                    <label for="title">Title (optional)</label>
+                    <input type="text" id="title" placeholder="Enter slide title...">
+                </div>
+                <div class="form-group">
+                    <label for="body">Body Text</label>
+                    <textarea id="body" placeholder="Enter slide content...
 Supports:
 - Bullet points (start with -)
 - **bold text**
 - *italic text*"></textarea>
-            </div>
-            <div class="button-group">
-                <button class="btn-download" id="downloadBtn">Download PNG (1080×1920)</button>
-                <button class="btn-clear" id="clearBtn">Clear</button>
-            </div>
-            <div class="info">
-                <strong>Local-first:</strong> This app runs entirely in your browser. No data leaves your device.
+                </div>
+                <div class="button-group">
+                    <button class="btn-download" id="downloadBtn">Download Slide</button>
+                    <button class="btn-download-all" id="downloadAllBtn">Download All</button>
+                    <button class="btn-clear" id="clearBtn">Clear</button>
+                </div>
+                <div class="info">
+                    <strong>Local-first:</strong> This app runs entirely in your browser. No data leaves your device.
+                </div>
             </div>
         </div>
 
@@ -217,17 +324,47 @@ Supports:
             FONT_FAMILY: '"LiberationSans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
         };
 
+        // ===== Slide State Management =====
+        let slides = [];
+        let currentSlideIndex = 0;
+
+        function initializeSlides() {
+            if (slides.length === 0) {
+                slides.push({ title: '', body: '' });
+                currentSlideIndex = 0;
+            }
+        }
+
+        function getCurrentSlide() {
+            return slides[currentSlideIndex] || { title: '', body: '' };
+        }
+
+        function updateCurrentSlide(title, body) {
+            if (!slides[currentSlideIndex]) {
+                slides[currentSlideIndex] = {};
+            }
+            slides[currentSlideIndex].title = title;
+            slides[currentSlideIndex].body = body;
+        }
+
         // ===== DOM Elements =====
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const titleInput = document.getElementById('title');
         const bodyInput = document.getElementById('body');
         const downloadBtn = document.getElementById('downloadBtn');
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
         const clearBtn = document.getElementById('clearBtn');
+        const addSlideBtn = document.getElementById('addSlideBtn');
+        const removeSlideBtn = document.getElementById('removeSlideBtn');
+        const slidesNav = document.getElementById('slidesNav');
 
         // Set canvas to full resolution
         canvas.width = CONFIG.SLIDE_WIDTH;
         canvas.height = CONFIG.SLIDE_HEIGHT;
+
+        // Initialize slides
+        initializeSlides();
 
         // ===== Utility Functions =====
 
@@ -502,11 +639,12 @@ Supports:
         }
 
         /**
-         * Download the current slide as a PNG.
+         * Download a single slide as a PNG with a numbered filename.
          */
-        function downloadSlide() {
-            let title = titleInput.value;
-            let body = bodyInput.value;
+        function downloadSlide(slideIndex) {
+            const slide = slides[slideIndex];
+            let title = slide.title || '';
+            let body = slide.body || '';
 
             // Apply seed logic: only for empty canvas
             if (!title.trim() && !body.trim()) {
@@ -516,33 +654,131 @@ Supports:
             // Render to canvas (full resolution)
             renderSlide(title, body);
 
-            // Convert to blob and download
+            // Convert to blob and download with numbered filename (01, 02, 03, etc.)
             canvas.toBlob((blob) => {
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = 'slide.png';
+                const slideNumber = String(slideIndex + 1).padStart(2, '0');
+                link.download = `slide-${slideNumber}.png`;
                 link.click();
                 URL.revokeObjectURL(url);
             }, 'image/png');
         }
 
         /**
-         * Clear all inputs.
+         * Download all slides sequentially.
+         */
+        function downloadAllSlides() {
+            slides.forEach((_, index) => {
+                // Add a small delay to ensure downloads don't conflict
+                setTimeout(() => {
+                    downloadSlide(index);
+                }, index * 200);
+            });
+        }
+
+        /**
+         * Update the slides navigator UI.
+         */
+        function updateSlidesNav() {
+            slidesNav.innerHTML = '';
+            slides.forEach((_, index) => {
+                const tab = document.createElement('button');
+                tab.className = 'slide-tab' + (index === currentSlideIndex ? ' active' : '');
+                tab.textContent = String(index + 1);
+                tab.addEventListener('click', () => {
+                    switchSlide(index);
+                });
+                slidesNav.appendChild(tab);
+            });
+
+            // Update button states
+            removeSlideBtn.disabled = slides.length <= 1;
+        }
+
+        /**
+         * Switch to a different slide.
+         */
+        function switchSlide(index) {
+            // Save current slide state
+            updateCurrentSlide(titleInput.value, bodyInput.value);
+
+            // Switch to new slide
+            currentSlideIndex = index;
+            const slide = getCurrentSlide();
+            titleInput.value = slide.title || '';
+            bodyInput.value = slide.body || '';
+
+            // Update UI
+            updateSlidesNav();
+            updatePreview();
+        }
+
+        /**
+         * Add a new slide.
+         */
+        function addSlide() {
+            // Save current slide
+            updateCurrentSlide(titleInput.value, bodyInput.value);
+
+            // Create new slide
+            slides.push({ title: '', body: '' });
+            currentSlideIndex = slides.length - 1;
+
+            // Update UI and inputs
+            titleInput.value = '';
+            bodyInput.value = '';
+            updateSlidesNav();
+            updatePreview();
+        }
+
+        /**
+         * Remove the current slide.
+         */
+        function removeSlide() {
+            if (slides.length <= 1) return;
+
+            slides.splice(currentSlideIndex, 1);
+            if (currentSlideIndex >= slides.length) {
+                currentSlideIndex = slides.length - 1;
+            }
+
+            const slide = getCurrentSlide();
+            titleInput.value = slide.title || '';
+            bodyInput.value = slide.body || '';
+
+            updateSlidesNav();
+            updatePreview();
+        }
+
+        /**
+         * Clear all inputs for current slide.
          */
         function clearInputs() {
             titleInput.value = '';
             bodyInput.value = '';
+            updateCurrentSlide('', '');
             updatePreview();
         }
 
         // ===== Event Listeners =====
-        titleInput.addEventListener('input', updatePreview);
-        bodyInput.addEventListener('input', updatePreview);
-        downloadBtn.addEventListener('click', downloadSlide);
+        titleInput.addEventListener('input', () => {
+            updateCurrentSlide(titleInput.value, bodyInput.value);
+            updatePreview();
+        });
+        bodyInput.addEventListener('input', () => {
+            updateCurrentSlide(titleInput.value, bodyInput.value);
+            updatePreview();
+        });
+        downloadBtn.addEventListener('click', () => downloadSlide(currentSlideIndex));
+        downloadAllBtn.addEventListener('click', downloadAllSlides);
         clearBtn.addEventListener('click', clearInputs);
+        addSlideBtn.addEventListener('click', addSlide);
+        removeSlideBtn.addEventListener('click', removeSlide);
 
         // Initial render
+        updateSlidesNav();
         updatePreview();
     </script>
 </body>
