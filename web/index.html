@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- build: cycle-5-ship-and-deploy -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -656,6 +657,10 @@ Supports:
 
             // Convert to blob and download with numbered filename (01, 02, 03, etc.)
             canvas.toBlob((blob) => {
+                if (!blob) {
+                    alert('Download failed — try again.');
+                    return;
+                }
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
@@ -670,11 +675,37 @@ Supports:
          * Download all slides sequentially.
          */
         function downloadAllSlides() {
+            let promise = Promise.resolve();
             slides.forEach((_, index) => {
-                // Add a small delay to ensure downloads don't conflict
-                setTimeout(() => {
-                    downloadSlide(index);
-                }, index * 200);
+                promise = promise.then(() => {
+                    const slide = slides[index];
+                    let title = slide.title || '';
+                    let body = slide.body || '';
+
+                    if (!title.trim() && !body.trim()) {
+                        body = 'Type your story here…\n\nSupported formatting:\n- **bold text** for emphasis\n- *italic text* for style\n- Bullet points with -\n\nEdit any text to begin.';
+                    }
+
+                    renderSlide(title, body);
+
+                    return new Promise((resolve) => {
+                        canvas.toBlob((blob) => {
+                            if (!blob) {
+                                alert('Download failed — try again.');
+                                resolve();
+                                return;
+                            }
+                            const url = URL.createObjectURL(blob);
+                            const link = document.createElement('a');
+                            link.href = url;
+                            const slideNumber = String(index + 1).padStart(2, '0');
+                            link.download = `slide-${slideNumber}.png`;
+                            link.click();
+                            URL.revokeObjectURL(url);
+                            resolve();
+                        }, 'image/png');
+                    });
+                });
             });
         }
 

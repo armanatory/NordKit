@@ -1,6 +1,21 @@
 # Changelog
 
 
+## 2026-05-06T06:00:36Z — Default cycle (Understand → Capture) (`default-cycle`)
+
+**Files changed**
+- modified: `web/index.html`
+
+**What each stage did**
+- `understand` (operations) — **Hard acceptance gate for Evaluate:** `curl -I https://nordkit.hiarman.com` must return 200 before any `accepted` or `pass` verdict is allowed.
+- `review` (reviewer) — Review written to `./ledger/workflows/default-cycle/review-summary.md`.
+- `identify` (product-explorer) — The reviewer's escalation note (does the sandbox have a Caddy primitive?) is the load-bearing question. Directions A and B are the most honest about that uncertainty; Direction D is the optimist's path; Direction C gives the founder agency…
+- `prioritize` (product-owner) — Summary written to `./ledger/workflows/default-cycle/prioritize-summary.md`.
+- `produce` (builder) — The produce-summary has been written to `./ledger/workflows/default-cycle/produce-summary.md`.
+- `evaluate` (qa-observer) — **Flags for future cycles (not blocking now):** 1. Long body text truncation is invisible — no character limit or truncation indicator (will affect content creators) 2. Browser download-blocking can silently suppress slides 2+ when Downloa…
+- `capture` (operations) — The capture summary is written at `./ledger/workflows/default-cycle/capture-summary.md` and is ready for the runner to archive.
+
+
 ## 2026-05-06T05:01:33Z — Default cycle (Understand → Capture) (`default-cycle`)
 
 **Files changed**
