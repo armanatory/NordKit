@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<meta name="build" content="cycle-6">
+<meta name="build" content="cycle-7">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,16 +21,18 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'LiberationSans', sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
+            background: #1a1a1a;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
 
         .container {
-            max-width: 900px;
-            margin: 0 auto;
             display: flex;
-            flex-direction: column;
-            gap: 30px;
+            flex-direction: row;
+            width: 100vw;
+            height: 100vh;
+            gap: 0;
         }
 
         .left-column {
@@ -38,111 +40,104 @@
         }
 
         .right-column {
-            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         .slides-panel {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            background: #2a2a2a;
+            padding: 12px 16px;
+            border-bottom: 1px solid #444;
+            flex-shrink: 0;
         }
 
         .slides-panel h2 {
-            margin-bottom: 15px;
-            font-size: 18px;
-            color: #333;
+            margin: 0 0 10px 0;
+            font-size: 13px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .slides-nav {
             display: flex;
-            gap: 10px;
+            gap: 6px;
             flex-wrap: wrap;
-            margin-bottom: 15px;
+            margin-bottom: 0;
         }
 
         .slide-tab {
-            padding: 8px 16px;
-            border: 2px solid #ddd;
-            background: #f9f9f9;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border: 1px solid #555;
+            background: #1a1a1a;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            color: #666;
-            transition: all 0.2s;
+            font-size: 12px;
+            font-weight: 600;
+            color: #999;
+            transition: all 0.15s;
         }
 
         .slide-tab:hover {
-            border-color: #1a1a1a;
-            background: #f0f0f0;
+            border-color: #777;
+            background: #2a2a2a;
         }
 
         .slide-tab.active {
-            background: #1a1a1a;
-            color: white;
-            border-color: #1a1a1a;
+            background: #fff;
+            color: #1a1a1a;
+            border-color: #fff;
         }
 
         .slides-controls {
             display: flex;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 6px;
+            margin-top: 8px;
         }
 
         .btn-add-slide {
-            padding: 8px 16px;
-            background: #1a1a1a;
+            padding: 6px 12px;
+            background: #228B22;
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 3px;
+            font-size: 12px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .btn-add-slide:hover {
-            background: #333;
+            background: #1a6b1a;
         }
 
         .btn-remove-slide {
-            padding: 8px 16px;
-            background: #ff6b6b;
+            padding: 6px 12px;
+            background: #cc3333;
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 3px;
+            font-size: 12px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .btn-remove-slide:hover {
-            background: #ff5252;
+            background: #bb2222;
         }
 
         .btn-remove-slide:disabled {
-            background: #ccc;
+            background: #555;
             cursor: not-allowed;
         }
 
         .input-section {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 400px;
-            max-height: 500px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-            z-index: 1000;
-            overflow-y: auto;
             display: none;
         }
 
         .input-section.visible {
-            display: block;
+            display: none;
         }
 
         .input-section h2 {
@@ -179,108 +174,77 @@
             font-family: monospace;
         }
 
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
         button {
             flex: 1;
-            padding: 12px 16px;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 500;
+            padding: 8px 12px;
+            border: 1px solid #555;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .btn-download {
-            background: #1a1a1a;
-            color: white;
-        }
-
-        .btn-download:hover {
-            background: #333;
+            transition: background-color 0.15s;
         }
 
         .btn-download:disabled {
-            background: #ccc;
+            background: #555;
             cursor: not-allowed;
-        }
-
-        .btn-download-all {
-            background: #228B22;
-            color: white;
-            flex: 1;
-        }
-
-        .btn-download-all:hover {
-            background: #1a6b1a;
-        }
-
-        .btn-clear {
-            background: #f0f0f0;
-            color: #333;
-        }
-
-        .btn-clear:hover {
-            background: #e0e0e0;
+            color: #999;
         }
 
         .preview-section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #1a1a1a;
+            padding: 0;
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         .preview-section h2 {
-            margin-bottom: 15px;
-            font-size: 18px;
-            color: #333;
+            display: none;
         }
 
         .palette-controls {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 4px;
+            margin: 0;
+            padding: 12px 16px;
+            background: #2a2a2a;
+            border-bottom: 1px solid #444;
+            flex-shrink: 0;
         }
 
         .palette-controls label {
             display: block;
-            margin-bottom: 10px;
-            font-weight: 500;
-            color: #555;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #aaa;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .palette-swatches {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
         }
 
         .swatch {
             width: 100%;
             aspect-ratio: 1;
-            border-radius: 4px;
+            border-radius: 3px;
             cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.2s;
+            border: 2px solid transparent;
+            transition: all 0.15s;
         }
 
         .swatch:hover {
-            transform: scale(1.05);
-            border-color: #333;
+            transform: scale(1.08);
+            border-color: #666;
         }
 
         .swatch.active {
-            border-color: #000;
-            box-shadow: 0 0 0 2px white, 0 0 0 4px #000;
+            border-color: #fff;
+            box-shadow: 0 0 0 1px #fff, 0 0 0 3px #1a1a1a;
         }
 
         .canvas-wrapper {
@@ -288,213 +252,177 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #f9f9f9;
-            border: 1px solid #eee;
-            border-radius: 4px;
-            padding: 20px;
+            background: #0a0a0a;
+            flex: 1;
             overflow: auto;
-            max-height: 700px;
-            min-height: 500px;
+            padding: 20px;
         }
 
         #canvas {
-            border: 2px solid #ddd;
+            border: none;
             background: #1a1a1a;
             max-width: 100%;
             height: auto;
             image-rendering: auto;
             image-rendering: crisp-edges;
             cursor: text;
+            display: block;
         }
 
         .edit-overlay {
-            position: fixed;
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid #333;
-            border-radius: 4px;
-            padding: 15px;
-            z-index: 2000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            position: absolute;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 0, 0.3);
+            border-radius: 0;
+            padding: 0;
+            z-index: 1500;
+            box-shadow: none;
             display: none;
-            flex-direction: column;
-            gap: 10px;
-            min-width: 300px;
+            outline: none;
+            font-family: 'LiberationSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            caret-color: #ffff00;
+            line-height: 1;
         }
 
         .edit-overlay.visible {
-            display: flex;
+            display: block;
         }
 
         .edit-overlay input,
         .edit-overlay textarea {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 14px;
+            display: none;
         }
 
         .edit-overlay textarea {
-            min-height: 120px;
-            resize: vertical;
-            font-family: monospace;
+            display: none;
         }
 
         .edit-overlay .edit-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
+            display: none;
         }
 
         .edit-overlay button {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background: #f9f9f9;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .edit-overlay button:hover {
-            background: #e9e9e9;
+            display: none;
         }
 
         .edit-overlay .save-btn {
-            background: #1a1a1a;
-            color: white;
-            border-color: #1a1a1a;
-        }
-
-        .edit-overlay .save-btn:hover {
-            background: #333;
+            display: none;
         }
 
         .info {
-            margin-top: 15px;
-            padding: 10px;
-            background: #f9f9f9;
-            border-left: 3px solid #1a1a1a;
+            display: none;
+        }
+
+        .button-group {
+            padding: 12px 16px;
+            background: #2a2a2a;
+            border-top: 1px solid #444;
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .button-group button {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #555;
+            border-radius: 3px;
+            background: #1a1a1a;
+            color: #ccc;
+            cursor: pointer;
             font-size: 12px;
-            color: #666;
-            line-height: 1.5;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+
+        .button-group button:hover {
+            background: #333;
+            border-color: #777;
+        }
+
+        .btn-download {
+            background: #444;
+            color: #ccc;
+        }
+
+        .btn-download:hover {
+            background: #555;
+        }
+
+        .btn-download-all {
+            background: #228B22;
+            color: white;
+            border-color: #1a6b1a;
+        }
+
+        .btn-download-all:hover {
+            background: #1a6b1a;
+        }
+
+        .btn-clear {
+            background: #444;
+            color: #ccc;
+        }
+
+        .btn-clear:hover {
+            background: #555;
         }
 
         @media (max-width: 768px) {
             .container {
-                gap: 20px;
+                flex-direction: column;
             }
 
-            .input-section {
-                width: calc(100% - 40px);
-                right: 20px;
-                left: 20px;
+            .slides-panel {
+                order: 2;
+            }
+
+            .preview-section {
+                order: 1;
             }
 
             .palette-swatches {
                 grid-template-columns: repeat(4, 1fr);
             }
-
-            .edit-overlay {
-                min-width: 280px;
-                right: 10px !important;
-                left: 10px !important;
-            }
         }
     </style>
 </head>
 <body>
-    <h1 style="text-align: center; margin-bottom: 30px; color: #333;">NordKit — Instagram Story Slides</h1>
-
     <div class="container">
-        <div class="left-column">
-            <div class="slides-panel">
-                <h2>Slides</h2>
-                <div class="slides-nav" id="slidesNav"></div>
-                <div class="slides-controls">
-                    <button class="btn-add-slide" id="addSlideBtn">Add Slide</button>
-                    <button class="btn-remove-slide" id="removeSlideBtn">Remove Current</button>
-                </div>
-            </div>
-        </div>
+        <div class="left-column"></div>
 
         <div class="right-column">
             <div class="slides-panel">
                 <h2>Slides</h2>
                 <div class="slides-nav" id="slidesNav"></div>
                 <div class="slides-controls">
-                    <button class="btn-add-slide" id="addSlideBtn">Add Slide</button>
-                    <button class="btn-remove-slide" id="removeSlideBtn">Remove Current</button>
+                    <button class="btn-add-slide" id="addSlideBtn">+ Slide</button>
+                    <button class="btn-remove-slide" id="removeSlideBtn">Remove</button>
                 </div>
+            </div>
+
+            <div class="palette-controls">
+                <label>Background</label>
+                <div class="palette-swatches" id="paletteSwatches"></div>
             </div>
 
             <div class="preview-section">
-                <h2>Canvas (click to edit)</h2>
-                <div class="palette-controls">
-                    <label>Background</label>
-                    <div class="palette-swatches" id="paletteSwatches"></div>
-                </div>
+                <h2>Canvas</h2>
                 <div class="canvas-wrapper">
                     <canvas id="canvas"></canvas>
-                </div>
-                <div class="info">
-                    <strong>Resolution:</strong> 1080×1920 pixels (full IG story resolution).
-                    Click on text to edit. Use palette to change background.
-                </div>
-                <div class="button-group">
-                    <button class="btn-download" id="downloadBtn">Download Slide</button>
-                    <button class="btn-download-all" id="downloadAllBtn">Download All</button>
-                    <button class="btn-clear" id="clearBtn">Clear</button>
+                    <div class="edit-overlay" id="titleOverlay" contenteditable="true"></div>
+                    <div class="edit-overlay" id="bodyOverlay" contenteditable="true"></div>
                 </div>
             </div>
-        </div>
 
-        <div class="input-section">
-            <h2>Edit Slide</h2>
-            <div class="form-group">
-                <label for="title">Title (optional)</label>
-                <input type="text" id="title" placeholder="Enter slide title...">
-            </div>
-            <div class="form-group">
-                <label for="body">Body Text</label>
-                <textarea id="body" placeholder="Enter slide content...
-Supports:
-- Bullet points (start with -)
-- **bold text**
-- *italic text*"></textarea>
-            </div>
             <div class="button-group">
-                <button class="btn-download" id="downloadBtnPanel">Download Slide</button>
-                <button class="btn-download-all" id="downloadAllBtnPanel">Download All</button>
-                <button class="btn-clear" id="clearBtnPanel">Clear</button>
+                <button class="btn-download" id="downloadBtn">Download</button>
+                <button class="btn-download-all" id="downloadAllBtn">Download All</button>
+                <button class="btn-clear" id="clearBtn">Clear</button>
             </div>
-            <div class="info">
-                <strong>Local-first:</strong> This app runs entirely in your browser. No data leaves your device.
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit overlay for title -->
-    <div class="edit-overlay" id="titleOverlay">
-        <label style="font-weight: 500; color: #333;">Edit Title</label>
-        <input type="text" id="titleEditInput" placeholder="Enter title...">
-        <div class="edit-buttons">
-            <button class="save-btn" id="saveTitleBtn">Save</button>
-            <button id="cancelTitleBtn">Cancel</button>
-        </div>
-    </div>
-
-    <!-- Edit overlay for body -->
-    <div class="edit-overlay" id="bodyOverlay">
-        <label style="font-weight: 500; color: #333;">Edit Body Text</label>
-        <textarea id="bodyEditInput" placeholder="Enter body text...
-Supports:
-- Bullet points (start with -)
-- **bold text**
-- *italic text*"></textarea>
-        <div class="edit-buttons">
-            <button class="save-btn" id="saveBodyBtn">Save</button>
-            <button id="cancelBodyBtn">Cancel</button>
         </div>
     </div>
 
@@ -552,14 +480,9 @@ Supports:
         // ===== DOM Elements =====
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        const titleInput = document.getElementById('title');
-        const bodyInput = document.getElementById('body');
         const downloadBtn = document.getElementById('downloadBtn');
         const downloadAllBtn = document.getElementById('downloadAllBtn');
         const clearBtn = document.getElementById('clearBtn');
-        const downloadBtnPanel = document.getElementById('downloadBtnPanel');
-        const downloadAllBtnPanel = document.getElementById('downloadAllBtnPanel');
-        const clearBtnPanel = document.getElementById('clearBtnPanel');
         const addSlideBtn = document.querySelectorAll('#addSlideBtn');
         const removeSlideBtn = document.querySelectorAll('#removeSlideBtn');
         const slidesNav = document.querySelectorAll('#slidesNav');
@@ -568,12 +491,6 @@ Supports:
         // Edit overlay elements
         const titleOverlay = document.getElementById('titleOverlay');
         const bodyOverlay = document.getElementById('bodyOverlay');
-        const titleEditInput = document.getElementById('titleEditInput');
-        const bodyEditInput = document.getElementById('bodyEditInput');
-        const saveTitleBtn = document.getElementById('saveTitleBtn');
-        const cancelTitleBtn = document.getElementById('cancelTitleBtn');
-        const saveBodyBtn = document.getElementById('saveBodyBtn');
-        const cancelBodyBtn = document.getElementById('cancelBodyBtn');
 
         // Set canvas to full resolution
         canvas.width = CONFIG.SLIDE_WIDTH;
@@ -858,12 +775,12 @@ Supports:
          * Seed with example content if both title and body are empty.
          */
         function updatePreview() {
-            let title = titleInput.value;
-            let body = bodyInput.value;
+            let title = titleOverlay.textContent;
+            let body = bodyOverlay.textContent;
 
             // Seed with example content only on first load (empty canvas)
             if (!title.trim() && !body.trim()) {
-                body = 'Click to edit…\n\nSupported formatting:\n- **bold text** for emphasis\n- *italic text* for style\n- Bullet points with -\n\nClick title or text to begin.';
+                body = 'Hook your audience with a story that matters.\n\nMake sequences that resonate.';
             }
 
             renderSlide(title, body, currentBackgroundColor);
@@ -880,7 +797,7 @@ Supports:
 
             // Apply seed logic: only for empty canvas
             if (!title.trim() && !body.trim()) {
-                body = 'Click to edit…\n\nSupported formatting:\n- **bold text** for emphasis\n- *italic text* for style\n- Bullet points with -\n\nClick title or text to begin.';
+                body = 'Hook your audience with a story that matters.\n\nMake sequences that resonate.';
             }
 
             // Render to canvas (full resolution)
@@ -915,7 +832,7 @@ Supports:
                     let backgroundColor = slide.backgroundColor || CONFIG.BACKGROUND_COLOR;
 
                     if (!title.trim() && !body.trim()) {
-                        body = 'Click to edit…\n\nSupported formatting:\n- **bold text** for emphasis\n- *italic text* for style\n- Bullet points with -\n\nClick title or text to begin.';
+                        body = 'Hook your audience with a story that matters.\n\nMake sequences that resonate.';
                     }
 
                     renderSlide(title, body, backgroundColor);
@@ -969,14 +886,17 @@ Supports:
          */
         function switchSlide(index) {
             // Save current slide state
-            updateCurrentSlide(titleInput.value, bodyInput.value, currentBackgroundColor);
+            updateCurrentSlide(titleOverlay.textContent, bodyOverlay.textContent, currentBackgroundColor);
 
             // Switch to new slide
             currentSlideIndex = index;
             const slide = getCurrentSlide();
-            titleInput.value = slide.title || '';
-            bodyInput.value = slide.body || '';
+            titleOverlay.textContent = slide.title || '';
+            bodyOverlay.textContent = slide.body || '';
             currentBackgroundColor = slide.backgroundColor || CONFIG.BACKGROUND_COLOR;
+
+            // Hide overlays on slide switch
+            hideOverlays();
 
             // Update UI
             updateSlidesNav();
@@ -989,16 +909,17 @@ Supports:
          */
         function addSlide() {
             // Save current slide
-            updateCurrentSlide(titleInput.value, bodyInput.value, currentBackgroundColor);
+            updateCurrentSlide(titleOverlay.textContent, bodyOverlay.textContent, currentBackgroundColor);
 
             // Create new slide
             slides.push({ title: '', body: '', backgroundColor: CONFIG.BACKGROUND_COLOR });
             currentSlideIndex = slides.length - 1;
             currentBackgroundColor = CONFIG.BACKGROUND_COLOR;
 
-            // Update UI and inputs
-            titleInput.value = '';
-            bodyInput.value = '';
+            // Update UI and overlays
+            titleOverlay.textContent = '';
+            bodyOverlay.textContent = '';
+            hideOverlays();
             updateSlidesNav();
             updatePaletteUI();
             updatePreview();
@@ -1016,10 +937,11 @@ Supports:
             }
 
             const slide = getCurrentSlide();
-            titleInput.value = slide.title || '';
-            bodyInput.value = slide.body || '';
+            titleOverlay.textContent = slide.title || '';
+            bodyOverlay.textContent = slide.body || '';
             currentBackgroundColor = slide.backgroundColor || CONFIG.BACKGROUND_COLOR;
 
+            hideOverlays();
             updateSlidesNav();
             updatePaletteUI();
             updatePreview();
@@ -1029,9 +951,10 @@ Supports:
          * Clear all inputs for current slide.
          */
         function clearInputs() {
-            titleInput.value = '';
-            bodyInput.value = '';
+            titleOverlay.textContent = '';
+            bodyOverlay.textContent = '';
             updateCurrentSlide('', '', currentBackgroundColor);
+            hideOverlays();
             updatePreview();
         }
 
@@ -1077,24 +1000,40 @@ Supports:
         }
 
         /**
-         * Position an overlay near the given canvas pixel coordinates.
+         * Position a contenteditable overlay at the given canvas-space coordinates.
+         * The overlay is absolutely positioned within the canvas-wrapper.
          */
-        function positionOverlay(overlay, canvasX, canvasY) {
+        function positionOverlay(overlay, canvasX, canvasY, width, height) {
             const canvasRect = canvas.getBoundingClientRect();
-            let x = canvasRect.left + canvasX;
-            let y = canvasRect.top + canvasY;
+            const wrapperRect = canvas.parentElement.getBoundingClientRect();
 
-            // Keep overlay within viewport
-            const overlayHeight = 280;
-            if (y + overlayHeight > window.innerHeight - 20) {
-                y = Math.max(20, window.innerHeight - overlayHeight - 20);
-            }
-            if (x + 300 > window.innerWidth - 20) {
-                x = Math.max(20, window.innerWidth - 300 - 20);
-            }
+            // Calculate position relative to canvas wrapper
+            const relativeX = canvasX * (canvasRect.width / CONFIG.SLIDE_WIDTH);
+            const relativeY = canvasY * (canvasRect.height / CONFIG.SLIDE_HEIGHT);
+            const relativeWidth = width * (canvasRect.width / CONFIG.SLIDE_WIDTH);
+            const relativeHeight = height * (canvasRect.height / CONFIG.SLIDE_HEIGHT);
 
-            overlay.style.top = y + 'px';
-            overlay.style.left = x + 'px';
+            overlay.style.left = relativeX + 'px';
+            overlay.style.top = relativeY + 'px';
+            overlay.style.width = relativeWidth + 'px';
+            overlay.style.height = relativeHeight + 'px';
+            overlay.style.fontSize = (CONFIG.TITLE_FONT_SIZE * (canvasRect.width / CONFIG.SLIDE_WIDTH)) + 'px';
+        }
+
+        function positionBodyOverlay(overlay, canvasX, canvasY, width, height) {
+            const canvasRect = canvas.getBoundingClientRect();
+
+            // Calculate position relative to canvas wrapper
+            const relativeX = canvasX * (canvasRect.width / CONFIG.SLIDE_WIDTH);
+            const relativeY = canvasY * (canvasRect.height / CONFIG.SLIDE_HEIGHT);
+            const relativeWidth = width * (canvasRect.width / CONFIG.SLIDE_WIDTH);
+            const relativeHeight = height * (canvasRect.height / CONFIG.SLIDE_HEIGHT);
+
+            overlay.style.left = relativeX + 'px';
+            overlay.style.top = relativeY + 'px';
+            overlay.style.width = relativeWidth + 'px';
+            overlay.style.height = relativeHeight + 'px';
+            overlay.style.fontSize = (CONFIG.BODY_FONT_SIZE * (canvasRect.width / CONFIG.SLIDE_WIDTH)) + 'px';
         }
 
         /**
@@ -1104,17 +1043,18 @@ Supports:
             const x = CONFIG.PADDING;
             const maxWidth = CONFIG.SLIDE_WIDTH - 2 * CONFIG.PADDING;
             ctx.font = getFontString(CONFIG.TITLE_FONT_SIZE);
-            const titleWrappedLines = titleInput.value.trim()
-                ? wrapTextByPixels(titleInput.value.trim(), maxWidth)
+            const titleText = titleOverlay.textContent.trim();
+            const titleWrappedLines = titleText
+                ? wrapTextByPixels(titleText, maxWidth)
                 : [];
 
             if (titleWrappedLines.length === 0) {
-                return { x: CONFIG.PADDING, y: CONFIG.SLIDE_HEIGHT / 2 - 100 };
+                return { x: CONFIG.PADDING, y: CONFIG.SLIDE_HEIGHT / 2 - 100, width: maxWidth, height: CONFIG.TITLE_FONT_SIZE };
             }
 
             let contentHeight = titleWrappedLines.length * (CONFIG.TITLE_FONT_SIZE * CONFIG.LINE_SPACING);
             let y = Math.max(CONFIG.PADDING, (CONFIG.SLIDE_HEIGHT - contentHeight) / 2);
-            return { x, y };
+            return { x, y, width: maxWidth, height: contentHeight };
         }
 
         function getBodyClickRegion() {
@@ -1124,16 +1064,16 @@ Supports:
             let titleWrappedLines = [];
             let bodyWrappedLines = [];
 
-            if (titleInput.value.trim()) {
+            if (titleOverlay.textContent.trim()) {
                 ctx.font = getFontString(CONFIG.TITLE_FONT_SIZE);
-                titleWrappedLines = wrapTextByPixels(titleInput.value.trim(), maxWidth);
+                titleWrappedLines = wrapTextByPixels(titleOverlay.textContent.trim(), maxWidth);
                 contentHeight += titleWrappedLines.length * (CONFIG.TITLE_FONT_SIZE * CONFIG.LINE_SPACING);
                 contentHeight += CONFIG.PADDING / 2;
             }
 
-            if (bodyInput.value.trim()) {
+            if (bodyOverlay.textContent.trim()) {
                 ctx.font = getFontString(CONFIG.BODY_FONT_SIZE);
-                const bodyLines = parseBodyText(bodyInput.value);
+                const bodyLines = parseBodyText(bodyOverlay.textContent);
                 for (const line of bodyLines) {
                     if (line.text.trim()) {
                         const bulletOffset = line.isBullet ? 40 : 0;
@@ -1145,40 +1085,47 @@ Supports:
             }
 
             let y = Math.max(CONFIG.PADDING, (CONFIG.SLIDE_HEIGHT - contentHeight) / 2);
-            if (titleInput.value.trim()) {
+            if (titleOverlay.textContent.trim()) {
                 y += titleWrappedLines.length * (CONFIG.TITLE_FONT_SIZE * CONFIG.LINE_SPACING);
                 y += CONFIG.PADDING / 2;
             }
 
-            return { x, y };
+            const bodyHeight = bodyWrappedLines.reduce((sum, bw) => sum + bw.lines.length * (CONFIG.BODY_FONT_SIZE * CONFIG.LINE_SPACING), 0);
+            return { x, y, width: maxWidth, height: bodyHeight };
         }
 
         /**
-         * Show the title edit overlay.
+         * Show the title edit overlay (transparent contenteditable div).
          */
         function showTitleOverlay() {
-            titleEditInput.value = titleInput.value;
             const region = getTitleClickRegion();
-            const canvasRect = canvas.getBoundingClientRect();
-            const canvasX = Math.min(region.x * (canvasRect.width / CONFIG.SLIDE_WIDTH), canvasRect.width - 300);
-            const canvasY = Math.min(region.y * (canvasRect.height / CONFIG.SLIDE_HEIGHT), canvasRect.height - 200);
-            positionOverlay(titleOverlay, canvasX, canvasY);
+            positionOverlay(titleOverlay, region.x, region.y, region.width, region.height);
             titleOverlay.classList.add('visible');
-            titleEditInput.focus();
+            titleOverlay.focus();
+            // Move cursor to end
+            const range = document.createRange();
+            const sel = window.getSelection();
+            range.selectNodeContents(titleOverlay);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
         }
 
         /**
-         * Show the body edit overlay.
+         * Show the body edit overlay (transparent contenteditable div).
          */
         function showBodyOverlay() {
-            bodyEditInput.value = bodyInput.value;
             const region = getBodyClickRegion();
-            const canvasRect = canvas.getBoundingClientRect();
-            const canvasX = Math.min(region.x * (canvasRect.width / CONFIG.SLIDE_WIDTH), canvasRect.width - 300);
-            const canvasY = Math.min(region.y * (canvasRect.height / CONFIG.SLIDE_HEIGHT), canvasRect.height - 300);
-            positionOverlay(bodyOverlay, canvasX, canvasY);
+            positionBodyOverlay(bodyOverlay, region.x, region.y, region.width, region.height);
             bodyOverlay.classList.add('visible');
-            bodyEditInput.focus();
+            bodyOverlay.focus();
+            // Move cursor to end
+            const range = document.createRange();
+            const sel = window.getSelection();
+            range.selectNodeContents(bodyOverlay);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
         }
 
         /**
@@ -1203,16 +1150,15 @@ Supports:
             const bodyRegion = getBodyClickRegion();
 
             // Check if click is in title region
-            if (titleInput.value.trim()) {
-                const titleHeight = 200;
-                if (canvasX > titleRegion.x && canvasY > titleRegion.y && canvasY < titleRegion.y + titleHeight) {
+            if (titleOverlay.textContent.trim()) {
+                if (canvasX > titleRegion.x && canvasY > titleRegion.y && canvasY < titleRegion.y + titleRegion.height) {
                     showTitleOverlay();
                     return;
                 }
             }
 
             // Default to body edit (or show title if empty)
-            if (bodyInput.value.trim()) {
+            if (bodyOverlay.textContent.trim()) {
                 showBodyOverlay();
             } else {
                 showTitleOverlay();
@@ -1220,59 +1166,47 @@ Supports:
         }
 
         // ===== Event Listeners =====
-        titleInput.addEventListener('input', () => {
-            updateCurrentSlide(titleInput.value, bodyInput.value, currentBackgroundColor);
+        // Title overlay input handler
+        titleOverlay.addEventListener('input', () => {
+            updateCurrentSlide(titleOverlay.textContent, bodyOverlay.textContent, currentBackgroundColor);
             updatePreview();
         });
-        bodyInput.addEventListener('input', () => {
-            updateCurrentSlide(titleInput.value, bodyInput.value, currentBackgroundColor);
+
+        titleOverlay.addEventListener('blur', hideOverlays);
+
+        titleOverlay.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideOverlays();
+            }
+        });
+
+        // Body overlay input handler
+        bodyOverlay.addEventListener('input', () => {
+            updateCurrentSlide(titleOverlay.textContent, bodyOverlay.textContent, currentBackgroundColor);
             updatePreview();
         });
+
+        bodyOverlay.addEventListener('blur', hideOverlays);
+
+        bodyOverlay.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideOverlays();
+            }
+        });
+
+        // Download and clear buttons
         downloadBtn.addEventListener('click', () => downloadSlide(currentSlideIndex));
         downloadAllBtn.addEventListener('click', downloadAllSlides);
         clearBtn.addEventListener('click', clearInputs);
-        downloadBtnPanel.addEventListener('click', () => downloadSlide(currentSlideIndex));
-        downloadAllBtnPanel.addEventListener('click', downloadAllSlides);
-        clearBtnPanel.addEventListener('click', clearInputs);
 
+        // Slide navigation
         addSlideBtn.forEach(btn => btn.addEventListener('click', addSlide));
         removeSlideBtn.forEach(btn => btn.addEventListener('click', removeSlide));
 
         // Canvas click handler
         canvas.addEventListener('click', handleCanvasClick);
 
-        // Title overlay handlers
-        saveTitleBtn.addEventListener('click', () => {
-            titleInput.value = titleEditInput.value;
-            updateCurrentSlide(titleInput.value, bodyInput.value, currentBackgroundColor);
-            updatePreview();
-            hideOverlays();
-        });
-        cancelTitleBtn.addEventListener('click', hideOverlays);
-        titleEditInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && e.ctrlKey) {
-                saveTitleBtn.click();
-            }
-            if (e.key === 'Escape') {
-                cancelTitleBtn.click();
-            }
-        });
-
-        // Body overlay handlers
-        saveBodyBtn.addEventListener('click', () => {
-            bodyInput.value = bodyEditInput.value;
-            updateCurrentSlide(titleInput.value, bodyInput.value, currentBackgroundColor);
-            updatePreview();
-            hideOverlays();
-        });
-        cancelBodyBtn.addEventListener('click', hideOverlays);
-        bodyEditInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                cancelBodyBtn.click();
-            }
-        });
-
-        // Close overlays when clicking outside
+        // Close overlays when clicking outside both overlays and canvas
         document.addEventListener('click', (e) => {
             if (!titleOverlay.contains(e.target) && !bodyOverlay.contains(e.target) && e.target !== canvas) {
                 hideOverlays();
