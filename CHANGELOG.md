@@ -1,6 +1,20 @@
 # Changelog
 
 
+## 2026-05-08T04:08:49Z — Default cycle (Understand → Capture) (`default-cycle`)
+
+**Files changed**: none.
+
+**What each stage did**
+- `understand` (operations) — - **No blocking escalations.** Deploy path is clear: `static_root: web`, edits to `repo/web/index.html` are live at https://nordkit.hiarman.com/ immediately. - **The unresolved founder requirement:** "full image editor, not boxes to write…
+- `review` (reviewer) — Summary at `./ledger/workflows/default-cycle/review-summary.md` for the downstream Builder.
+- `identify` (product-explorer) — The structural note to the Product Owner is explicit: the Prioritize step must name one mechanic in a single sentence before Builder writes any code.
+- `prioritize` (product-owner) — One flag from the agent: it noted `docs/governance.md` does not exist in this sandbox, so the §2 escalation classes were applied from the prompt's enumeration rather than the source doc. Not blocking, but worth knowing if a later cycle nee…
+- `produce` (builder) — **Produce summary written:** `./ledger/workflows/default-cycle/produce-summary.md` — ready for downstream Review and Evaluate steps.
+- `evaluate` (qa-observer) — Two new lessons added to `ledger/lessons.md` covering the `aspect-ratio` proportional scaling trap and the `flex: 1` canvas-dominance inference failure.
+- `capture` (operations) — - **Cycle file** `cycles/7-full-image-editor.md`: set `status: closed`, `verdict: withhold-experience`, `step: capture`, `closed: 2026-05-08T05:35:00Z`. - **`lessons.md`**: already updated by the evaluate step with the two Cycle 7 lessons…
+
+
 ## 2026-05-06T08:52:36Z — Default cycle (Understand → Capture) (`default-cycle`)
 
 **Files changed**
